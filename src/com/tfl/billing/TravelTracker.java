@@ -4,14 +4,19 @@ import com.oyster.*;
 import com.tfl.external.Customer;
 import com.tfl.external.CustomerDatabase;
 import com.tfl.external.PaymentsSystem;
+import jdk.nashorn.internal.scripts.JO;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 public class TravelTracker implements ScanListener {
 
-    static final BigDecimal OFF_PEAK_JOURNEY_PRICE = new BigDecimal(2.40);
-    static final BigDecimal PEAK_JOURNEY_PRICE = new BigDecimal(3.20);
+    static final BigDecimal LONG_OFF_PEAK_JOURNEY_PRICE = new BigDecimal(2.70);
+    static final BigDecimal SHORT_OFF_PEAK_JOURNEY_PRICE = new BigDecimal(1.60);
+    static final BigDecimal LONG_PEAK_JOURNEY_PRICE = new BigDecimal(3.80);
+    static final BigDecimal SHORT_PEAK_JOURNEY_PRICE = new BigDecimal(2.90);
+
+    private long timeOfJourney;
 
     private final List<JourneyEvent> eventLog = new ArrayList<JourneyEvent>();
     private final Set<UUID> currentlyTravelling = new HashSet<UUID>();
@@ -27,6 +32,8 @@ public class TravelTracker implements ScanListener {
 
     private void totalJourneysFor(Customer customer) {
         List<JourneyEvent> customerJourneyEvents = new ArrayList<JourneyEvent>();
+        BigDecimal journeyPrice;
+
         for (JourneyEvent journeyEvent : eventLog) {
             if (journeyEvent.cardId().equals(customer.cardId())) {
                 customerJourneyEvents.add(journeyEvent);
@@ -46,13 +53,46 @@ public class TravelTracker implements ScanListener {
             }
         }
 
+        int cap = 7;
         BigDecimal customerTotal = new BigDecimal(0);
         for (Journey journey : journeys) {
-            BigDecimal journeyPrice = OFF_PEAK_JOURNEY_PRICE;
-            if (peak(journey)) {
-                journeyPrice = PEAK_JOURNEY_PRICE;
+
+            int timeOfJourneyInSeconds = journey.durationSeconds();
+            float timeOfJourney = timeOfJourneyInSeconds/60+timeOfJourneyInSeconds%60;
+
+            if (timeOfJourney>=25) {
+                if (peak(journey)) {
+                    cap=9;
+                    journeyPrice = LONG_PEAK_JOURNEY_PRICE;
+                }
+
+                else {
+                     journeyPrice = LONG_OFF_PEAK_JOURNEY_PRICE;
+                }
+            }
+
+            else {
+                if(peak(journey)) {
+                    cap=9;
+                    journeyPrice = SHORT_PEAK_JOURNEY_PRICE;
+                }
+
+                else {
+                    journeyPrice = SHORT_OFF_PEAK_JOURNEY_PRICE;
+                }
             }
             customerTotal = customerTotal.add(journeyPrice);
+        }
+
+        BigDecimal peakCapInBigDecimal = BigDecimal.valueOf(9.0);
+        BigDecimal offPeakCapInBigDecimal = BigDecimal.valueOf(7.0);
+
+        if ((cap==9) && (customerTotal.compareTo(peakCapInBigDecimal)>0)) {
+            customerTotal = peakCapInBigDecimal;
+        }
+
+        else if (customerTotal.compareTo(offPeakCapInBigDecimal)>0) {
+            customerTotal = offPeakCapInBigDecimal;
         }
 
         PaymentsSystem.getInstance().charge(customer, journeys, roundToNearestPenny(customerTotal));
