@@ -1,17 +1,21 @@
 package com.tfl.billing;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class Journey {
 
     private final JourneyEvent start;
     private final JourneyEvent end;
+    private List<String> characteristics;
 
     public Journey(JourneyEvent start, JourneyEvent end) {
         this.start = start;
         this.end = end;
+        this.characteristics = new ArrayList<String>();
     }
 
     public UUID originId() {
@@ -49,4 +53,9 @@ public class Journey {
     private String format(long time) {
         return SimpleDateFormat.getInstance().format(new Date(time));
     }
+
+    public List<String> getCharacteristics() {return characteristics;}
+
+    public void setCharacteristics(String characteristic) {characteristics.add(characteristic);}
+
 }
