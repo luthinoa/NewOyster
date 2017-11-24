@@ -1,17 +1,13 @@
 package com.tfl.billing;
-import com.tfl.external.PaymentsSystem;
-
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.lang.reflect.Method;
 import java.util.*;
 
 public class CustomerChargeCalculation {
 
     /*
-    This class takes a list of a customers journeys and calculates the total charge of his journeys.
+    This class takes a list of a customers journeys and calculates the total charge of all journeys.
      */
-
 
     /*
     The following BigDecimals are set prices for the 4 different types of journeys.
@@ -25,36 +21,28 @@ public class CustomerChargeCalculation {
 
     private List<Journey> customerJourneys;
 
-    /*
-    This list holds strings which represent characteristics of a journey, which are names as the methods which check
-    these characteristics of a journey. i.e - Note there are methods "isLong" and "IsPeak".
-    To add characteristic for a journey, add it to the list and create a method (called the same) which checks for that
-    characteristic.
-     */
-    private List<String> journeyCharacteristicsOptions = new ArrayList<String>(Arrays.asList("isLong","IsPeak"));
-    private Method[] methods = CustomerChargeCalculation.class.getMethods();
-
-
     public CustomerChargeCalculation(List<Journey> journeys) {
         customerJourneys = journeys;
         customerTotal = new BigDecimal(0);
     }
 
+    /*
+    This method uses a factory to create characteristic classes which check whether the journey has that characteristic.
+    It then adds that characteristic to the journey object.
+     */
     public void determineTypeOfJourney(Journey journey) throws InvocationTargetException, IllegalAccessException {
-
 
         CharacteristicsFactory characteristicsFactory = new CharacteristicsFactory();
         Characteristics isPeak = characteristicsFactory.getCharacteristic("IsPeak");
         Characteristics isLong = characteristicsFactory.getCharacteristic("IsLong");
 
         if (isPeak.isThisCharacteristicTrue(journey)==true) {
-            journey.getCharacteristics().add("isPeak");
+            journey.setCharacteristics("isPeak");
         }
 
         if (isLong.isThisCharacteristicTrue(journey)==true) {
-            journey.getCharacteristics().add("isLong");
+            journey.setCharacteristics("isLong");
         }
-
     }
 
     /*
@@ -109,7 +97,6 @@ public class CustomerChargeCalculation {
        Determine what's the cap for the current customer.
        Default cap is 7. But if at least one of the journeys is peak, the cap would be 9.
     */
-
     public int determineCap() {
 
         int cap = 7;

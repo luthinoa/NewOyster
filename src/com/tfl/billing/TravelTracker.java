@@ -1,6 +1,5 @@
 package com.tfl.billing;
 
-import com.oyster.*;
 import com.tfl.external.Customer;
 import com.tfl.external.CustomerDatabase;
 import com.tfl.external.PaymentsSystem;
@@ -17,7 +16,6 @@ public class TravelTracker {
     public TravelTracker(GetCardReadersData getCardReadersData) {
 
         this.getCardReadersData = getCardReadersData;
-        this.customers = new ArrayList<Customer>();
     }
 
     /*
