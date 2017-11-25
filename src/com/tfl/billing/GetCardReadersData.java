@@ -38,4 +38,6 @@ public class GetCardReadersData implements ScanListener {
     }
 
     public List<JourneyEvent> getEventLog() {return eventLog;}
+
+    public Set<UUID> getCurrentlyTravelling() {return currentlyTravelling;}
 }

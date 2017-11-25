@@ -38,12 +38,6 @@ public class ExternalJarAdapter implements ExternalJar {
 
     @Override
     public void charge(Customer customer,List<Journey> journeys, BigDecimal cost) {
-
         PaymentsSystem.getInstance().charge(customer,journeys,cost);
     }
-
-
-
-
-
 }
