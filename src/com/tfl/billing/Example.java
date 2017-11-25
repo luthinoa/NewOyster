@@ -17,9 +17,10 @@ public class Example {
 
     public static void main(String[] args) throws Exception {
 
-        OysterCard myCard = new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d");
-        OysterCardReader paddingtonReader = OysterReaderLocator.atStation(Station.PADDINGTON);
-        OysterCardReader bakerStreetReader = OysterReaderLocator.atStation(Station.BAKER_STREET);
+        ExternalJarAdapter externalJarAdapter = new ExternalJarAdapter();
+        OysterCard myCard = externalJarAdapter.getOysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d");
+        OysterCardReader paddingtonReader  = externalJarAdapter.getCardReader(Station.PADDINGTON);
+        OysterCardReader bakerStreetReader = externalJarAdapter.getCardReader(Station.BAKER_STREET);
 
         GetCardReadersData cardReadersData = new GetCardReadersData();
         cardReadersData.connect(paddingtonReader,bakerStreetReader);

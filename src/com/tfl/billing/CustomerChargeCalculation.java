@@ -54,7 +54,7 @@ public class CustomerChargeCalculation {
 
         for(Journey journey:customerJourneys) {
 
-            BigDecimal charge = BigDecimal.valueOf(0);
+            BigDecimal cost = BigDecimal.valueOf(0);
 
             //triggering the generation of a characteristic list for the journey.
             determineTypeOfJourney(journey);
@@ -63,27 +63,27 @@ public class CustomerChargeCalculation {
 
             //if the list of the journey's characteristic is empty, it is not peak/long.
             if (characteristics.size() == 0) {
-                charge = SHORT_OFF_PEAK_JOURNEY_PRICE;
+                cost = SHORT_OFF_PEAK_JOURNEY_PRICE;
             }
 
             //if the list has one element, it's either long or peak.
             if (characteristics.size() == 1) {
 
                 if (characteristics.contains("isLong")) {
-                    charge = LONG_OFF_PEAK_JOURNEY_PRICE;
+                    cost = LONG_OFF_PEAK_JOURNEY_PRICE;
                 }
 
                 else {
-                    charge = SHORT_PEAK_JOURNEY_PRICE;
+                    cost = SHORT_PEAK_JOURNEY_PRICE;
                 }
             }
 
             //if the list's size is 2, it's both peak and long.
             else if (characteristics.size()==2){
-                charge = LONG_PEAK_JOURNEY_PRICE;
+                cost = LONG_PEAK_JOURNEY_PRICE;
             }
 
-            customerTotal = customerTotal.add(charge);
+            customerTotal = customerTotal.add(cost);
         }
 
         //determine cap value for current customer, and if its total charge exceeds the cap. Change total charge accordingly.
