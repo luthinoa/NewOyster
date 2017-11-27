@@ -58,4 +58,8 @@ public class Journey {
 
     public void setCharacteristics(String characteristic) {characteristics.add(characteristic);}
 
+    public JourneyEvent getStart() {return start;}
+    public JourneyEvent getEnd() {return end;}
+
+
 }

@@ -103,7 +103,7 @@ public class CustomerChargeCalculation {
 
         for (Journey journey : customerJourneys) {
 
-            if (journey.getCharacteristics().contains("IsPeak")) {
+            if (journey.getCharacteristics().contains("isPeak")) {
                 cap = 9;
                 return cap;
             }

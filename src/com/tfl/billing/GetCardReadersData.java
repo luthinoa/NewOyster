@@ -8,8 +8,8 @@ import java.util.*;
 
 public class GetCardReadersData implements ScanListener {
 
-    Set<UUID> currentlyTravelling;
-    List<JourneyEvent> eventLog;
+    private Set<UUID> currentlyTravelling;
+    private List<JourneyEvent> eventLog;
 
     public GetCardReadersData() {
         this.currentlyTravelling = new HashSet<>();
@@ -25,12 +25,12 @@ public class GetCardReadersData implements ScanListener {
     @Override
     public void cardScanned(UUID cardId, UUID readerId) {
         if (currentlyTravelling.contains(cardId)) {
-            eventLog.add(new JourneyEnd(cardId, readerId));
+            eventLog.add(new JourneyEvent(cardId, readerId,false));
             currentlyTravelling.remove(cardId);
         } else {
             if (CustomerDatabase.getInstance().isRegisteredId(cardId)) {
                 currentlyTravelling.add(cardId);
-                eventLog.add(new JourneyStart(cardId, readerId));
+                eventLog.add(new JourneyEvent(cardId, readerId,true));
             } else {
                 throw new UnknownOysterCardException(cardId);
             }

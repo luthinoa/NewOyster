@@ -20,10 +20,10 @@ public class Journeys {
         JourneyEvent start = null;
 
         for (JourneyEvent event : customerJourneyEvents) {
-            if (event instanceof JourneyStart) {
+            if (event.isStart()) {
                 start = event;
             }
-            if (event instanceof JourneyEnd && start != null) {
+            if (!event.isStart() && start != null) {
                 journeys.add(new Journey(start, event));
                 start = null;
             }
