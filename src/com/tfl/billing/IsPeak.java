@@ -5,6 +5,12 @@ import java.util.Date;
 
 public class IsPeak implements Characteristics {
 
+    /*
+    This class checks if the journey checks if a journey is peak/off peak.
+    peak = hour of the day is between 6 to 9am, or 17 to 19pm.
+    otherwise off peak.
+     */
+
     @Override
     public boolean isThisCharacteristicTrue(Journey journey) {
 

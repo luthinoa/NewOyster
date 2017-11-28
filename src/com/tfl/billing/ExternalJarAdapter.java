@@ -13,6 +13,12 @@ import java.util.List;
 
 public class ExternalJarAdapter implements ExternalJar {
 
+    /*
+    This adapter moderates the data that is held in the external jar file, to match the objects we generated ourselves.
+     */
+
+
+    //Get the customers list from database.
     @Override
     public List<Customer> getCustomers() {
 
@@ -20,6 +26,7 @@ public class ExternalJarAdapter implements ExternalJar {
         List<Customer> customers = customerDatabase.getCustomers();
         return customers;
     }
+
 
     @Override
     public OysterCardReader getCardReader(Station station) {

@@ -18,7 +18,6 @@ public class CustomerChargeCalculation {
     static final BigDecimal SHORT_PEAK_JOURNEY_PRICE = new BigDecimal(2.90);
 
     private BigDecimal customerTotal;
-
     private List<Journey> customerJourneys;
 
     public CustomerChargeCalculation(List<Journey> journeys) {
@@ -35,6 +34,9 @@ public class CustomerChargeCalculation {
         CharacteristicsFactory characteristicsFactory = new CharacteristicsFactory();
         Characteristics isPeak = characteristicsFactory.getCharacteristic("IsPeak");
         Characteristics isLong = characteristicsFactory.getCharacteristic("IsLong");
+
+        /*if the journey is true under one of the following characteristics, it sets the characteristic
+        in the Journey object (adds it to the characteristics list in the Journey object).*/
 
         if (isPeak.isThisCharacteristicTrue(journey)==true) {
             journey.setCharacteristics("isPeak");

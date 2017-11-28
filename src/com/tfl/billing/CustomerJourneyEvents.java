@@ -5,13 +5,19 @@ import java.util.List;
 
 public class CustomerJourneyEvents {
 
-    private List<JourneyEvent> customerJourneyEvents = new ArrayList<JourneyEvent>();
+    /*
+    This class generates and holds JourneyEvents of one customer only, separating it from the eventLog of all customers.
+     */
+
+    private List<JourneyEvent> customerJourneyEvents;
     private Customer customer;
     private List<JourneyEvent> eventLog;
 
     public CustomerJourneyEvents(Customer customer, List<JourneyEvent> eventLog) {
+        customerJourneyEvents = new ArrayList<>();
         this.customer = customer;
         this.eventLog = eventLog;
+
     }
 
     /*

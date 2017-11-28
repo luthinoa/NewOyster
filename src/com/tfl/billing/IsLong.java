@@ -2,6 +2,12 @@ package com.tfl.billing;
 
 public class IsLong implements Characteristics {
 
+    /*
+    This class checks if the passed journey is long/short.
+    long = longer than 25 minutes.
+    otherwise it's short.
+     */
+
     @Override
     public boolean isThisCharacteristicTrue(Journey journey) {
 

@@ -35,6 +35,7 @@ public class JourneyEvent{
         return  timeInMillies;
     }
 
+    //is this the start of a Journey or end? true if start, false if end.
     public boolean isStart() {return start;}
 
     public void setType(boolean start){this.start=start;}
