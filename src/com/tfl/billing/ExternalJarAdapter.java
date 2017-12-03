@@ -27,21 +27,7 @@ public class ExternalJarAdapter implements ExternalJar {
 
         CustomerDatabase customerDatabase = CustomerDatabase.getInstance();
         List<Customer> customers = customerDatabase.getCustomers();
-        allCustomers = customers;
-
-        while(allCustomers.size()<12) {
-
-            customers = customerDatabase.getCustomers();
-
-            for(Customer customer:customers) {
-
-                if(!allCustomers.contains(customer)) {
-                    allCustomers.add(customer);
-                }
-            }
-        }
-
-        return allCustomers;
+        return customers;
     }
 
 
