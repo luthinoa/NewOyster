@@ -10,12 +10,12 @@ public class OysterCardTests {
     This test holds all unit tests for NewOyster program.
     */
 
-    private OysterScanPageObject oysterScanPageObject;
+    private ScanPageObject oysterScanPageObject;
     private CreateJourneysPageObject createJourneysPageObject;
     private ChargingPageObject chargingPageObject;
 
-    public OysterCardTests(){
-        oysterScanPageObject = new OysterScanPageObject();
+    public OysterCardTests() {
+        oysterScanPageObject = new ScanPageObject();
         chargingPageObject = new ChargingPageObject();
         createJourneysPageObject = new CreateJourneysPageObject();
     }
@@ -35,7 +35,7 @@ public class OysterCardTests {
     then asserts creating a journey list for a customer (from the individual journeyEventList),
      */
     @Test
-    public void checkCreationOfJourneys(){
+    public void checkCreationOfJourneys() {
         createJourneysPageObject.createEventLog();
         createJourneysPageObject.assertJourneyEventsForOneCustomer();
         createJourneysPageObject.assertJourneysForOneCustomer();
@@ -46,9 +46,9 @@ public class OysterCardTests {
      */
     @Test
     public void checkLongPeakJourney() throws InvocationTargetException, IllegalAccessException {
-        chargingPageObject.createJourney();
-        chargingPageObject.createTypeOfJourney(true,true);
-        chargingPageObject.assertCharge(true,true);
+        chargingPageObject.createJourney(false);
+        chargingPageObject.createTypeOfJourney(true, true);
+        chargingPageObject.assertCharge(true, true);
     }
 
     /*
@@ -56,7 +56,7 @@ public class OysterCardTests {
      */
     @Test
     public void checkLongOffPeakJourney() throws InvocationTargetException, IllegalAccessException {
-        chargingPageObject.createJourney();
+        chargingPageObject.createJourney(false);
         chargingPageObject.createTypeOfJourney(true,false);
         chargingPageObject.assertCharge(true,false);
     }
@@ -66,7 +66,7 @@ public class OysterCardTests {
      */
     @Test
     public void checkShortPeakJourney() throws InvocationTargetException, IllegalAccessException {
-        chargingPageObject.createJourney();
+        chargingPageObject.createJourney(false);
         chargingPageObject.createTypeOfJourney(false,true);
         chargingPageObject.assertCharge(false,true);
     }
@@ -76,7 +76,7 @@ public class OysterCardTests {
      */
     @Test
     public void checkShortOffPeakJourney() throws InvocationTargetException, IllegalAccessException {
-        chargingPageObject.createJourney();
+        chargingPageObject.createJourney(false);
         chargingPageObject.createTypeOfJourney(false,false);
         chargingPageObject.assertCharge(false,false);
     }
@@ -87,7 +87,7 @@ public class OysterCardTests {
      */
     @Test
     public void checkLowCapJourney() throws InvocationTargetException, IllegalAccessException {
-        chargingPageObject.createJourney();
+        chargingPageObject.createJourney(true);
         chargingPageObject.createJourneysToPassLowerCapValue();
         chargingPageObject.assertLowerCap();
     }
@@ -98,7 +98,7 @@ public class OysterCardTests {
     */
     @Test
     public void checkHighCapJourney() throws InvocationTargetException, IllegalAccessException {
-        chargingPageObject.createJourney();
+        chargingPageObject.createJourney(true);
         chargingPageObject.createJourneysToPassHigherCapValue();
         chargingPageObject.assertHigherCap();
     }

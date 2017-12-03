@@ -36,7 +36,7 @@ public class ChargingPageObject {
     /*
     Create a journey for testing purposes.
      */
-    public void createJourney() throws InvocationTargetException, IllegalAccessException {
+    public void createJourney(boolean isThisACapTest) throws InvocationTargetException, IllegalAccessException {
 
         //create card readers for testing and connect them.
         oysterCardForTesting.connectCardReaders();
@@ -46,8 +46,11 @@ public class ChargingPageObject {
 
         //touch twice to create a start and end of journey.
         oysterCard = oysterCardForTesting.getMyCard();
-        oysterCardForTesting.getStartStationOysterReader().touch(oysterCard);
-        oysterCardForTesting.getEndStationOysterReader().touch(oysterCard);
+
+        if(!isThisACapTest) {
+            oysterCardForTesting.getStartStationOysterReader().touch(oysterCard);
+            oysterCardForTesting.getEndStationOysterReader().touch(oysterCard);
+        }
     }
 
     /*
@@ -169,6 +172,12 @@ public class ChargingPageObject {
      */
     public void createJourneysToPassLowerCapValue() throws InvocationTargetException, IllegalAccessException {
 
+        //create card readers for testing and connect them.
+        oysterCardForTesting.connectCardReaders();
+
+        //create a travelTracker for testing purposes.
+        travelTracker = new TravelTracker(oysterCardForTesting.getCardReadersData());
+
         for (int i=0;i<4;i++) {
             oysterCardForTesting.getStartStationOysterReader().touch(oysterCard);
             oysterCardForTesting.getStartStationOysterReader().touch(oysterCard);
@@ -191,6 +200,13 @@ public class ChargingPageObject {
     We are creating 5 long peak journeys - so cap would be 9.
      */
     public void createJourneysToPassHigherCapValue() throws InvocationTargetException, IllegalAccessException {
+
+        //create card readers for testing and connect them.
+        oysterCardForTesting.connectCardReaders();
+
+        //create a travelTracker for testing purposes.
+        travelTracker = new TravelTracker(oysterCardForTesting.getCardReadersData());
+        oysterCard = oysterCardForTesting.getMyCard();
 
         for (int i=0;i<4;i++) {
             oysterCardForTesting.getStartStationOysterReader().touch(oysterCard);

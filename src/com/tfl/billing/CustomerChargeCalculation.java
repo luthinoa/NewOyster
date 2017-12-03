@@ -19,6 +19,7 @@ public class CustomerChargeCalculation {
 
     private BigDecimal customerTotal;
     private List<Journey> customerJourneys;
+    private final List<String> availableCharacteristics = Arrays.asList("isLong", "isPeak");
 
     public CustomerChargeCalculation(List<Journey> journeys) {
         customerJourneys = journeys;
@@ -26,24 +27,26 @@ public class CustomerChargeCalculation {
     }
 
     /*
-    This method uses a factory to create characteristic classes which check whether the journey has that characteristic.
-    It then adds that characteristic to the journey object.
+    This method iterates through the list of all possible characteristics, passes them to a factory to create
+    a corresponding object (which implements the Characteristic interface),
+    which uses  classes to check whether the journey has that characteristic.
+    If true, it adds that characteristic to the journey object.
      */
     public void determineTypeOfJourney(Journey journey) throws InvocationTargetException, IllegalAccessException {
 
         CharacteristicsFactory characteristicsFactory = new CharacteristicsFactory();
-        Characteristics isPeak = characteristicsFactory.getCharacteristic("IsPeak");
-        Characteristics isLong = characteristicsFactory.getCharacteristic("IsLong");
 
-        /*if the journey is true under one of the following characteristics, it sets the characteristic
-        in the Journey object (adds it to the characteristics list in the Journey object).*/
+        //iterate through the possible characteristics
+        for (String characteristic : availableCharacteristics) {
 
-        if (isPeak.isThisCharacteristicTrue(journey)==true) {
-            journey.setCharacteristics("isPeak");
-        }
+            //call the objects which check if a characteristic is true.
+            if(characteristicsFactory.getCharacteristic(characteristic).isThisCharacteristicTrue(journey)) {
 
-        if (isLong.isThisCharacteristicTrue(journey)==true) {
-            journey.setCharacteristics("isLong");
+                //if true, add to journey object.
+                journey.setCharacteristics(characteristic);
+            }
+
+
         }
     }
 

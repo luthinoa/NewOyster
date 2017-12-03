@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class OysterScanPageObject {
+public class ScanPageObject {
 
     /*
     This page object will assert that after every touch or card reader, a journey event in generated in the eventLog.
@@ -18,7 +18,7 @@ public class OysterScanPageObject {
     private OysterCardForTesting oysterCardForTesting;
     private OysterCard myCard;
 
-    public OysterScanPageObject(){
+    public ScanPageObject(){
         oysterCardForTesting = new OysterCardForTesting();
         myCard = new OysterCard();
     }
@@ -38,7 +38,7 @@ public class OysterScanPageObject {
         //get eventLog
         List<JourneyEvent> eventLog = oysterCardForTesting.getCardReadersData().getEventLog();
 
-        //create JoureyEvent with the same cardId and readerId as the one we used with touch().
+        //create JourneyEvent with the same cardId and readerId as the one we used with touch().
         JourneyEvent expectedJourneyStart = new JourneyEvent(myCard.id(),oysterCardForTesting.getStartStationOysterReader().id(),true);
 
         //assert that the expected start JourneyEvent (same cardID and readerID) is now in the eventLog.

@@ -9,6 +9,7 @@ import com.tfl.underground.OysterReaderLocator;
 import com.tfl.underground.Station;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExternalJarAdapter implements ExternalJar {
@@ -22,9 +23,25 @@ public class ExternalJarAdapter implements ExternalJar {
     @Override
     public List<Customer> getCustomers() {
 
+        List<Customer> allCustomers;
+
         CustomerDatabase customerDatabase = CustomerDatabase.getInstance();
         List<Customer> customers = customerDatabase.getCustomers();
-        return customers;
+        allCustomers = customers;
+
+        while(allCustomers.size()<12) {
+
+            customers = customerDatabase.getCustomers();
+
+            for(Customer customer:customers) {
+
+                if(!allCustomers.contains(customer)) {
+                    allCustomers.add(customer);
+                }
+            }
+        }
+
+        return allCustomers;
     }
 
 

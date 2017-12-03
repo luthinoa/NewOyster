@@ -8,20 +8,15 @@ import java.util.*;
 public class TravelTracker {
 
     /*
-    This class operates as a main controller, calling the different objects to change the state of the different type of lists
-    that describe a customer's journey.
-    This class is in charge of translating the customers' eventLog list (a list of JourneyEvents of all customers,
+    This class operates as a main controller.
+    It is in charge of translating the customers' eventLog list (a list of JourneyEvents of all customers),
     translate it into a JourneyEvent list for each customer, and then a final Journey list for each customer.
     It will charge all customers.
      */
 
-    private List<Customer> customers;
-    private GetCardReadersData getCardReadersData;
-    private ExternalJarAdapter externalJarAdapter;
-    private BigDecimal cost;
-
     //this variable is for testing use only.
     private BigDecimal costForTesting;
+    private GetCardReadersData getCardReadersData;
 
     /*
     When creating the travelTracker object, we are initializing the getCardReaderData object,
@@ -29,7 +24,6 @@ public class TravelTracker {
      */
     public TravelTracker(GetCardReadersData getCardReadersData) {
         this.getCardReadersData = getCardReadersData;
-        externalJarAdapter = new ExternalJarAdapter();
     }
 
     /*
@@ -37,8 +31,10 @@ public class TravelTracker {
      */
     public void chargeAccounts() throws InvocationTargetException, IllegalAccessException {
 
+        ExternalJarAdapter externalJarAdapter = new ExternalJarAdapter();
+
         //get customers from database
-        customers = externalJarAdapter.getCustomers();
+        List<Customer> customers = externalJarAdapter.getCustomers();
 
         //get the eventLog of all journeys.
         List<JourneyEvent> eventLog = getCardReadersData.getEventLog();
@@ -59,7 +55,7 @@ public class TravelTracker {
 
             //calculate the customer's charge of all his journeys.
             CustomerChargeCalculation customerChargeCalculation = new CustomerChargeCalculation(customersJourneys);
-            cost = customerChargeCalculation.chargeJourneys();
+            BigDecimal cost = customerChargeCalculation.chargeJourneys();
 
             //for testing - if current customer is the is the first customer, assign the cost value the the costForTesting.
             if(i==0) {
