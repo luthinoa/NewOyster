@@ -21,13 +21,13 @@ public class CreateJourneysPageObject {
     private List<Journey> customersJourneys;
 
     public CreateJourneysPageObject(){
-        oysterCardForTesting = new OysterCardForTesting();
+        oysterCardForTesting = new OysterCardForTesting("Noa Luthi");
     }
 
     public void createEventLog() {
 
         //connect the card readers for testing, held in the oysterCardForTesting object.
-        oysterCardForTesting.connectCardReaders();
+        oysterCardForTesting.createCustomerAndConnectCardReaders();
 
         //get the oyster card held the the oysterCardForTesting object.
         myCard = oysterCardForTesting.getMyCard();
@@ -46,22 +46,8 @@ public class CreateJourneysPageObject {
 
         eventLog = oysterCardForTesting.getCardReadersData().getEventLog();
 
-        /*
-        add a false customer with a false journey event, and add in to eventLog of all customers.
-         */
-        Customer customer = new Customer("Fred Bloggs",myCard);
-        OysterCard oysterCard = new OysterCard("3f1b3b55-f266-4426-ba1b-bcc506541866");
-        UUID falseOysterCardID = oysterCard.id();
-
-        //we set the false readerId of the falseJourneyEvent to the same reader as the testing journey.
-        UUID falseOysterCardReaderID = oysterCardForTesting.getStartStationOysterReader().id();
-
-        //add false journeyEvent to eventLog.
-        JourneyEvent falseJourneyEvent = new JourneyEvent(falseOysterCardID,falseOysterCardReaderID,true);
-        eventLog.add(falseJourneyEvent);
-
         //create our customer's JourneyEvent list from the eventLog.
-        CustomerJourneyEvents customerJourneyEvents = new CustomerJourneyEvents(customer, eventLog);
+        CustomerJourneyEvents customerJourneyEvents = new CustomerJourneyEvents(oysterCardForTesting.getCustomer(), eventLog);
         customersJourneyEventsList = customerJourneyEvents.createCustomerJourneyEventList();
 
         /*

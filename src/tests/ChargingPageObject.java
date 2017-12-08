@@ -3,6 +3,7 @@ package tests;
 import com.oyster.OysterCard;
 import com.tfl.billing.JourneyEvent;
 import com.tfl.billing.TravelTracker;
+import com.tfl.external.Customer;
 import org.junit.Assert;
 
 import java.lang.reflect.InvocationTargetException;
@@ -30,7 +31,7 @@ public class ChargingPageObject {
     public ChargingPageObject()
     {
         //holds oyster card and 2 card readers for testing.
-        oysterCardForTesting = new OysterCardForTesting();
+        oysterCardForTesting = new OysterCardForTesting("Yvette Pinder");
     }
 
     /*
@@ -39,12 +40,11 @@ public class ChargingPageObject {
     public void createJourney(boolean isThisACapTest) throws InvocationTargetException, IllegalAccessException {
 
         //create card readers for testing and connect them.
-        oysterCardForTesting.connectCardReaders();
+        oysterCardForTesting.createCustomerAndConnectCardReaders();
 
         //create a travelTracker for testing purposes.
-        travelTracker = new TravelTracker(oysterCardForTesting.getCardReadersData());
+        travelTracker = new TravelTracker(oysterCardForTesting.getCardReadersData(),oysterCardForTesting.getCustomersInDatabase());
 
-        //touch twice to create a start and end of journey.
         oysterCard = oysterCardForTesting.getMyCard();
 
         if(!isThisACapTest) {
@@ -173,10 +173,10 @@ public class ChargingPageObject {
     public void createJourneysToPassLowerCapValue() throws InvocationTargetException, IllegalAccessException {
 
         //create card readers for testing and connect them.
-        oysterCardForTesting.connectCardReaders();
+        oysterCardForTesting.createCustomerAndConnectCardReaders();
 
         //create a travelTracker for testing purposes.
-        travelTracker = new TravelTracker(oysterCardForTesting.getCardReadersData());
+        travelTracker = new TravelTracker(oysterCardForTesting.getCardReadersData(),oysterCardForTesting.getCustomersInDatabase());
 
         for (int i=0;i<4;i++) {
             oysterCardForTesting.getStartStationOysterReader().touch(oysterCard);
@@ -202,10 +202,10 @@ public class ChargingPageObject {
     public void createJourneysToPassHigherCapValue() throws InvocationTargetException, IllegalAccessException {
 
         //create card readers for testing and connect them.
-        oysterCardForTesting.connectCardReaders();
+        oysterCardForTesting.createCustomerAndConnectCardReaders();
 
         //create a travelTracker for testing purposes.
-        travelTracker = new TravelTracker(oysterCardForTesting.getCardReadersData());
+        travelTracker = new TravelTracker(oysterCardForTesting.getCardReadersData(),oysterCardForTesting.getCustomersInDatabase());
         oysterCard = oysterCardForTesting.getMyCard();
 
         for (int i=0;i<4;i++) {
@@ -219,7 +219,6 @@ public class ChargingPageObject {
     This method will assert that the cost value of the 5 long peak journeys is 9.
      */
     public void assertHigherCap() throws InvocationTargetException, IllegalAccessException {
-
         travelTracker.chargeAccounts();
         BigDecimal cost = travelTracker.getCostForTesting();
         Assert.assertTrue(cost.doubleValue()==BigDecimal.valueOf(9.0).doubleValue());

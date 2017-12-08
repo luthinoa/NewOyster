@@ -14,12 +14,15 @@ public interface ExternalJar {
     This interface will be used to implement an adapter for the data held in the external jar file.
      */
 
-    List<Customer> getCustomers();
+    void addCustomer(String customerName);
 
     OysterCardReader getCardReader(Station station);
 
     void charge(Customer customer, List<Journey> journeys, BigDecimal cost);
 
-    OysterCard getOysterCard(String id);
+    OysterCard getOysterCard(String nameOfCustomer);
 
+    Customer getCustomer(String nameOfCustomer);
+
+    List<Customer> getCustomersInDatabase();
 }

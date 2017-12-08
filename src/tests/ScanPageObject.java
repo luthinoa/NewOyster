@@ -19,13 +19,13 @@ public class ScanPageObject {
     private OysterCard myCard;
 
     public ScanPageObject(){
-        oysterCardForTesting = new OysterCardForTesting();
+        oysterCardForTesting = new OysterCardForTesting("Noa Luthi");
         myCard = new OysterCard();
     }
 
 
     public void createOysterCardAndRegisterCardReaders() {
-        oysterCardForTesting.connectCardReaders();
+        oysterCardForTesting.createCustomerAndConnectCardReaders();
         myCard = oysterCardForTesting.getMyCard();
     }
 

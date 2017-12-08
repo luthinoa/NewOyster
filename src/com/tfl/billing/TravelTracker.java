@@ -17,24 +17,21 @@ public class TravelTracker {
     //this variable is for testing use only.
     private BigDecimal costForTesting;
     private GetCardReadersData getCardReadersData;
+    private List<Customer> customers;
 
     /*
     When creating the travelTracker object, we are initializing the getCardReaderData object,
     which holds the eventLog for all customer.
      */
-    public TravelTracker(GetCardReadersData getCardReadersData) {
+    public TravelTracker(GetCardReadersData getCardReadersData, List<Customer> customers) {
         this.getCardReadersData = getCardReadersData;
+        this.customers = customers;
     }
 
     /*
     Trigger the process of charging all customers journeys.
      */
     public void chargeAccounts() throws InvocationTargetException, IllegalAccessException {
-
-        ExternalJarAdapter externalJarAdapter = new ExternalJarAdapter();
-
-        //get customers from database
-        List<Customer> customers = externalJarAdapter.getCustomers();
 
         //get the eventLog of all journeys.
         List<JourneyEvent> eventLog = getCardReadersData.getEventLog();
@@ -57,12 +54,13 @@ public class TravelTracker {
             CustomerChargeCalculation customerChargeCalculation = new CustomerChargeCalculation(customersJourneys);
             BigDecimal cost = customerChargeCalculation.chargeJourneys();
 
-            //for testing - if current customer is the is the first customer, assign the cost value the the costForTesting.
-            if(i==0) {
+            //for testing - if current customer is the is the last customer added (meaning the current customer), assign the cost value the the costForTesting.
+            if(i== customers.size()-1) {
                 costForTesting = cost;
             }
 
             //pass total charge to print charge value for each customer.
+            ExternalJarAdapter externalJarAdapter = new ExternalJarAdapter();
             externalJarAdapter.charge(customers.get(i), customersJourneys, cost);
         }
     }

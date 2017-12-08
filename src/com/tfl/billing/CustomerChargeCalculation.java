@@ -45,8 +45,6 @@ public class CustomerChargeCalculation {
                 //if true, add to journey object.
                 journey.setCharacteristics(characteristic);
             }
-
-
         }
     }
 

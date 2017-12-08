@@ -4,39 +4,46 @@ import com.oyster.OysterCard;
 import com.oyster.OysterCardReader;
 import com.tfl.billing.ExternalJarAdapter;
 import com.tfl.billing.GetCardReadersData;
+import com.tfl.billing.Journey;
 import com.tfl.billing.TravelTracker;
+import com.tfl.external.Customer;
 import com.tfl.underground.Station;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.List;
 
 public class OysterCardForTesting {
 
     private OysterCard myCard;
+    private String nameOfCustomer;
+    private Customer customer;
     private OysterCardReader startStationOysterReader;
     private OysterCardReader endStationOysterReader;
     private ExternalJarAdapter externalJarAdapter;
     private GetCardReadersData getCardReadersData;
     private Station start;
     private Station end;
-    private String cardID;
 
 
     /*
      Creating an oyster card and card readers, connecting them with the purpose of using in testing.
     */
 
-    public OysterCardForTesting(){
+    public OysterCardForTesting(String nameOfCustomer){
 
+        this.nameOfCustomer = nameOfCustomer;
+        externalJarAdapter = new ExternalJarAdapter();
         start = Station.PADDINGTON;
         end = Station.BAKER_STREET;
-        cardID = "38400000-8cf0-11bd-b23e-10b96e4ef00d";
     }
 
-    public void connectCardReaders() {
+    public void createCustomerAndConnectCardReaders() {
 
-        externalJarAdapter = new ExternalJarAdapter();
-        myCard = externalJarAdapter.getOysterCard(cardID);
+        externalJarAdapter.addCustomer(nameOfCustomer);
+        myCard = externalJarAdapter.getOysterCard(nameOfCustomer);
+        customer = externalJarAdapter.getCustomer(nameOfCustomer);
 
         startStationOysterReader = externalJarAdapter.getCardReader(start);
         endStationOysterReader = externalJarAdapter.getCardReader(end);
@@ -45,11 +52,17 @@ public class OysterCardForTesting {
         getCardReadersData.connect(startStationOysterReader,endStationOysterReader);
     }
 
+    public Customer getCustomer() {return customer;}
+
     public OysterCard getMyCard() {return myCard;}
+
+    public List<Customer> getCustomersInDatabase() {return externalJarAdapter.getCustomersInDatabase();}
 
     public OysterCardReader getStartStationOysterReader() {return startStationOysterReader;}
 
     public OysterCardReader getEndStationOysterReader() {return endStationOysterReader;}
 
     public GetCardReadersData getCardReadersData() {return getCardReadersData;}
+
+    public void printChargingForThisDay(Customer customer, List<Journey> journeys, BigDecimal cost) {externalJarAdapter.charge(customer,journeys,cost);}
 }
