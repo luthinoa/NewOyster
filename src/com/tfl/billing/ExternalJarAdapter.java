@@ -37,7 +37,7 @@ public class ExternalJarAdapter implements ExternalJar {
         Customer customer = new Customer(nameOfCustomer,oysterCard);
 
         //If the card id which was randomly generated already exists, randomly generate a new id until ok.
-        while(customersInDatabase.contains(customer)) {
+        while(customersInDatabase.contains(customer.cardId())) {
             oysterCardID = UUID.randomUUID();
             oysterCard = new OysterCard(oysterCardID.toString());
             customer = new Customer(nameOfCustomer,oysterCard);
